@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diffie-Hellman Key Exchange</title>
+</head>
+<body>
+
+<h2> Diffie-Hellman Key Exchange</h2>
+
+<h3> Sharvil (User)</h3>
+
+<label>Prime Number (p): </label>
+<input type="number" id="p"><br><br>
+
+<label>Generator (g): </label>
+<input type="number" id="g"><br><br>
+
+<label>Sharvil's Private Key (a): </label>
+<input type="number" id="a"><br><br>
+
+<h3> Akash (Second Party)</h3>
+
+<label>Akash's Private Key (b): </label>
+<input type="number" id="b"><br><br>
+
+<button onclick="calculate()">Generate Keys</button>
+
+<hr>
+
+<h3>Results</h3>
+
+<p>Sharvil's Public Key (A): <span id="A"></span></p>
+<p>Akash's Public Key (B): <span id="B"></span></p>
+
+<p><b>Shared Secret Key (Sharvil):</b> <span id="S1"></span></p>
+<p><b>Shared Secret Key (Akash):</b> <span id="S2"></span></p>
+
+<script>
+
+// Fast modular exponentiation
+function modExp(base, exp, mod) {
+    let result = 1;
+    base = base % mod;
+
+    while (exp > 0) {
+        if (exp % 2 === 1)
+            result = (result * base) % mod;
+
+        exp = Math.floor(exp / 2);
+        base = (base * base) % mod;
+    }
+    return result;
+}
+
+function calculate() {
+
+    let p = parseInt(document.getElementById("p").value);
+    let g = parseInt(document.getElementById("g").value);
+    let a = parseInt(document.getElementById("a").value);
+    let b = parseInt(document.getElementById("b").value);
+
+    // Public Keys
+    let A = modExp(g, a, p);
+    let B = modExp(g, b, p);
+
+    // Shared Secret
+    let S1 = modExp(B, a, p); // Sharvil
+    let S2 = modExp(A, b, p); // Akash
+
+    // Display results
+    document.getElementById("A").innerText = A;
+    document.getElementById("B").innerText = B;
+    document.getElementById("S1").innerText = S1;
+    document.getElementById("S2").innerText = S2;
+}
+
+</script>
+</body>
+</html>
+
+
+ Diffie–Hellman key exchange is a cryptographic algorithm used to securely exchange a secret key between two parties over a public network.
+It allows two users to create the same secret key without actually sending the key to each other.
+Its purpose is:Secure key exchange,Safe communication over the internet
+It is not mainly used for encryption itself.
+It is used to create the secret key that encryption algorithms use.
+*Diffie-Hellman is used in:HTTPS,VPN,Secure messaging,SSL/TLS,Internet security protocols.
+public key :A=g^a modp & B=g^b modp   #shared secret key:K=B^a modp  & K=A^bmodp
